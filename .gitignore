@@ -1,0 +1,39 @@
+# Python environments and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# Local secrets; keep a placeholder example if needed
+.env
+.env.*
+!.env.example
+
+# Large datasets, model weights, caches and generated outputs
+# Small hand-written datasets outside these directories can be committed.
+**/data/raw/
+**/outputs/
+**/checkpoints/
+**/models/
+**/.cache/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Keep pyproject.toml and uv.lock tracked when introduced.
