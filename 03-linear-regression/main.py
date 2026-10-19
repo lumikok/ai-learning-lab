@@ -1,14 +1,17 @@
 # 一元线性回归模型模拟实验
 
+# 预测函数
 def predict(x,w,b):
     return w * x + b
 
+# 损失函数
 def cost(data,w,b):
     a = 0
     for x,y in data:
         a += (predict(x,w,b)-y) ** 2
     return a / (2 * len(data))
 
+# 梯度计算函数
 def gradients(data,w,b):
     dw = 0
     db = 0
@@ -17,6 +20,7 @@ def gradients(data,w,b):
         db += (predict(x,w,b)-y)
     return dw / len(data), db / len(data)
 
+# 训练函数
 def train(data,w,b,learning_rate,steps):
     for i in range(steps):
         dw, db = gradients(data,w,b)
@@ -70,3 +74,14 @@ for x,y in validation_data2:
     MAE2 += abs(predict(x,w,b)-y)
 MAE2 /= len(validation_data2)
 print("变式验证集平均绝对误差：",MAE2)
+
+# 模拟不同学习率对训练结果的影响
+learning_rates = [0.01, 0.1,1.0,0.5]
+for lr in learning_rates:
+    w,b = 1,1
+    cost_training = [cost(data,w,b)]
+    for step in range(20):
+        w,b = train(data,w,b,lr,1)
+        cost_training.append(cost(data,w,b))
+    print(f"学习率：{lr}，训练0,1,2,3,5,10,20步后的损失：", cost_training[0], cost_training[1], cost_training[2], cost_training[3], cost_training[5], cost_training[10], cost_training[20])
+    print(f"学习率：{lr}，训练20步后参数：",w,b)

@@ -19,6 +19,7 @@
 | [01-train-and-predict](01-train-and-predict/README.md) | ML 基础 | 参数枚举、训练/测试误差、预处理信息泄漏 |
 | [02-overfitting](02-overfitting/README.md) | ML 基础 | 给定模型的训练/新数据 MAE 对比与符号错误定位 |
 | [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 手写梯度下降、训练/验证评价与负斜率变式 |
+| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、取列与批量预测/损失计算 |
 
 ## 目录组织
 
@@ -26,17 +27,19 @@
 
 ## 运行方式
 
-目前实验只使用 Python 标准库，在本目录运行：
+使用 Python 3.11 或更高版本，在仓库根目录通过 uv 安装锁定依赖并运行：
 
 ```powershell
-python .\01-train-and-predict\main.py
-python .\02-overfitting\main.py
-python .\03-linear-regression\main.py
+uv sync --locked
+uv run --frozen python .\01-train-and-predict\main.py
+uv run --frozen python .\02-overfitting\main.py
+uv run --frozen python .\03-linear-regression\main.py
+uv run --frozen python .\Numpy\01-numpy_basics.py
 ```
 
 具体实验的背景、结果和限制见各单元的说明。
 
-后续引入外部依赖时，在仓库根目录统一使用 uv 管理环境，并提交 `pyproject.toml` 与 `uv.lock`，补充相应的安装和运行步骤。
+前三个实验只用Python标准库，NumPy实验依赖NumPy 2.4.3。依赖与版本锁在根目录统一管理，各单元共用`.venv`，不重复建立环境。
 
 ## 数据与实验产物
 
