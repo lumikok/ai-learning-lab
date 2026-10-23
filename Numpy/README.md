@@ -7,6 +7,7 @@
 ```powershell
 uv sync --locked
 uv run --frozen python Numpy/01-numpy_basics.py
+uv run --frozen python Numpy/02-numpy_linear_regression.py
 ```
 
 `01-numpy_basics.py` 使用 `dtype=float` 创建二维数组，取出一维输入与标签，用数组表达式计算预测、残差和半均方误差；不执行参数训练。
@@ -17,3 +18,15 @@ uv run --frozen python Numpy/01-numpy_basics.py
 二维数组的shape表示两条轴的长度；一维(4,)与二维(4,1)不同。`data[:, 1]`取整列并得到一维数组，`data[1, :]`取一条样本。数组与标量的基本算术逐元素计算，同形数组按对应位置运算，`np.mean`求平均。
 
 参考：[NumPy入门](https://numpy.org/doc/stable/user/absolute_beginners.html)的Array fundamentals与Array attributes；本地练习不作为官方作业完成记录。
+
+## 数组梯度与训练
+
+`02-numpy_linear_regression.py` 将单变量回归的损失与梯度改为数组计算，保留迭代更新参数的循环。x、y和残差均取一维(m,)；两个梯度用同组旧参数计算，再更新w、b。
+
+- 原数据初始J=1.75，梯度(-3.5,-1.5)，一步参数(1.35,1.15)；与循环版比较，梯度及1/1000步参数在1e-10容差内一致。
+- 新数据[(-2,5),(0,1),(1,-1)]从(0,0)以学习率0.1训练1000步，得到约(-2,1)，J约1.51e-30。评价训练后损失必须接收训练函数返回的新参数，不能仍使用初始值。
+- 多特征预测示例：X形状(3,2)、w形状(2,)，用X @ w+b得到[10,5,3]，输出形状(3,)；当前仅表示和预测，不包含多特征参数训练。
+
+一维残差与输入的点积表示逐元素乘积的求和。(m,)与(m,1)相减会广播成(m,m)，可能不报错却改变计算含义；比较损失前先确认每个样本对应一个残差。
+
+课程对应吴恩达MLS第一门Week 2的向量化及多特征表示，复用原训练实验作本地实现，不等于完成官方Lab。

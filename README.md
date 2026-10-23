@@ -19,7 +19,7 @@
 | [01-train-and-predict](01-train-and-predict/README.md) | ML 基础 | 参数枚举、训练/测试误差、预处理信息泄漏 |
 | [02-overfitting](02-overfitting/README.md) | ML 基础 | 给定模型的训练/新数据 MAE 对比与符号错误定位 |
 | [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 手写梯度下降、训练/验证评价与负斜率变式 |
-| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、取列与批量预测/损失计算 |
+| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、批量损失与梯度训练、多特征预测表示 |
 
 ## 目录组织
 
@@ -35,6 +35,7 @@ uv run --frozen python .\01-train-and-predict\main.py
 uv run --frozen python .\02-overfitting\main.py
 uv run --frozen python .\03-linear-regression\main.py
 uv run --frozen python .\Numpy\01-numpy_basics.py
+uv run --frozen python .\Numpy\02-numpy_linear_regression.py
 ```
 
 具体实验的背景、结果和限制见各单元的说明。
