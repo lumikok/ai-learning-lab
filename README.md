@@ -18,8 +18,9 @@
 |---|---|---|
 | [01-train-and-predict](01-train-and-predict/README.md) | ML 基础 | 参数枚举、训练/测试误差、预处理信息泄漏 |
 | [02-overfitting](02-overfitting/README.md) | ML 基础 | 给定模型的训练/新数据 MAE 对比与符号错误定位 |
-| [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 手写梯度下降、训练/验证评价与负斜率变式 |
-| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、单变量与多特征梯度训练、删列及新数据对照 |
+| [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 循环与数组梯度下降、多特征训练、学习率/删列/标准化对照 |
+| [04-logistic-regression](04-logistic-regression/README.md) | ML 基础 | 给定参数的概率预测、交叉熵及阈值错误分析 |
+| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、索引与批量预测/损失计算 |
 
 ## 目录组织
 
@@ -33,15 +34,17 @@
 uv sync --locked
 uv run --frozen python .\01-train-and-predict\main.py
 uv run --frozen python .\02-overfitting\main.py
-uv run --frozen python .\03-linear-regression\main.py
+uv run --frozen python .\03-linear-regression\01-loop_linear_regression.py
 uv run --frozen python .\Numpy\01-numpy_basics.py
-uv run --frozen python .\Numpy\02-numpy_linear_regression.py
-uv run --frozen python .\Numpy\03-multiple_linear_regression.py
+uv run --frozen python .\03-linear-regression\02-numpy_linear_regression.py
+uv run --frozen python .\03-linear-regression\03-multiple_linear_regression.py
+uv run --frozen python .\03-linear-regression\04-feature_scaling.py
+uv run --frozen python .\04-logistic-regression\01-prediction_and_loss.py
 ```
 
 具体实验的背景、结果和限制见各单元的说明。
 
-前三个实验只用Python标准库，NumPy实验依赖NumPy 2.4.3。依赖与版本锁在根目录统一管理，各单元共用`.venv`，不重复建立环境。
+01、02单元和线性回归的循环版只用Python标准库；其余线性回归、逻辑回归及NumPy基础练习依赖NumPy 2.4.3。依赖与版本锁在根目录统一管理，各单元共用`.venv`，不重复建立环境。
 
 ## 数据与实验产物
 
