@@ -41,3 +41,5 @@ Thumbs.db
 .DS_Store
 
 # Keep pyproject.toml and uv.lock tracked when introduced.
+
+已看课程记录.md
