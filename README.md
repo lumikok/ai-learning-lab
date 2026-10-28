@@ -20,6 +20,7 @@
 | [02-overfitting](02-overfitting/README.md) | ML 基础 | 给定模型的训练/新数据 MAE 对比与符号错误定位 |
 | [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 循环与数组梯度下降、多特征训练、学习率/删列/标准化对照 |
 | [04-logistic-regression](04-logistic-regression/README.md) | ML 基础 | 概率预测、交叉熵、梯度训练、阈值与边界检查 |
+| [05-iris-classification](05-iris-classification/README.md) | ML 基础 | Iris 二分类、训练/验证、简单基线、错误分析与多划分特征对照 |
 | [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、索引与批量预测/损失计算 |
 
 ## 目录组织
@@ -41,11 +42,12 @@ uv run --frozen python .\03-linear-regression\03-multiple_linear_regression.py
 uv run --frozen python .\03-linear-regression\04-feature_scaling.py
 uv run --frozen python .\04-logistic-regression\01-prediction_and_loss.py
 uv run --frozen python .\04-logistic-regression\02-logistic_training.py
+uv run --frozen python .\05-iris-classification\main.py
 ```
 
 具体实验的背景、结果和限制见各单元的说明。
 
-01、02单元和线性回归的循环版只用Python标准库；其余线性回归、逻辑回归及NumPy基础练习依赖NumPy 2.4.3。依赖与版本锁在根目录统一管理，各单元共用`.venv`，不重复建立环境。
+01、02单元和线性回归的循环版只用Python标准库；其余线性回归、逻辑回归及NumPy基础练习依赖NumPy 2.4.3。Iris 实验还使用 scikit-learn 加载内置数据及划分样本，训练核心仍为 NumPy 实现。依赖与版本锁在根目录统一管理，各单元共用`.venv`，不重复建立环境。
 
 ## 数据与实验产物
 
