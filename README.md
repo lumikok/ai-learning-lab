@@ -21,6 +21,7 @@
 | [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 循环与数组梯度下降、多特征训练、学习率/删列/标准化对照 |
 | [04-logistic-regression](04-logistic-regression/README.md) | ML 基础 | 概率预测、交叉熵、梯度训练、阈值与边界检查 |
 | [05-iris-classification](05-iris-classification/README.md) | ML 基础 | Iris 二分类、训练/验证、简单基线、错误分析与多划分特征对照 |
+| [06-neural-network](06-neural-network/README.md) | DL 基础 | 两层网络前向、非线性、反向传播、数值梯度检查与三样本短训练 |
 | [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、索引与批量预测/损失计算 |
 
 ## 目录组织
@@ -43,6 +44,8 @@ uv run --frozen python .\03-linear-regression\04-feature_scaling.py
 uv run --frozen python .\04-logistic-regression\01-prediction_and_loss.py
 uv run --frozen python .\04-logistic-regression\02-logistic_training.py
 uv run --frozen python .\05-iris-classification\main.py
+uv run --frozen python .\06-neural-network\01-forward.py
+uv run --frozen python .\06-neural-network\02-training.py
 ```
 
 具体实验的背景、结果和限制见各单元的说明。
