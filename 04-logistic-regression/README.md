@@ -29,7 +29,7 @@ uv run --frozen python .\04-logistic-regression\02-logistic_training.py
 
 在这两个候选中，提高阈值减少了误报、增加了漏报，错误总数相同；若漏报代价更高，更倾向0.5。不能据此说某个阈值普遍最好。两组使用相同概率，所以交叉熵相同；这也说明错误总数不足以描述错误类型及代价。
 
-`01-prediction_and_loss.py` 是给定参数和构造数据上的计算与评价练习，不包含参数训练或独立测试集评估。课程对应吴恩达MLS第一门Week 3的Motivations、Logistic regression及后续分类损失内容；本地实验不作为官方Lab完成记录。
+上述预测与阈值对照位于 `01-prediction_and_loss.py`，参数训练位于 `02-logistic_training.py`。
 
 ## 梯度与训练
 
@@ -72,4 +72,4 @@ x_boundary = (log(t/(1-t)) - b) / w
 
 选例检查不能只用远离边界的点。新输入-0.4069的得分约0.00023、概率约0.50005752，阈值0.5时应预测1；把得分直接与概率阈值比较会误判为0。所有分类判断均应使用概率与对应阈值比较。
 
-当前结果仅说明构造训练数据上的更新、损失及边界检查正确，未进行训练/验证/测试划分或独立泛化评估。对应MLS第一门Week 3的Decision boundary、Cost function for logistic regression、Simplified Cost Function for Logistic Regression及Gradient Descent Implementation。
+课程参考：MLS 第一门 Week 3 的 Logistic regression、Decision boundary、Cost function for logistic regression、Simplified Cost Function for Logistic Regression 和 Gradient Descent Implementation。

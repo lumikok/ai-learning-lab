@@ -1,6 +1,6 @@
 # Iris 二分类：基线、错误分析与特征对照
 
-用 NumPy 逻辑回归区分 Iris 的 versicolor 与 virginica，比较四项特征和仅花瓣两项特征，并检查结论是否随数据划分改变。这是本地实验，训练函数复用 `04-logistic-regression/02-logistic_training.py`，不使用库提供的现成分类器，也不称为官方课程 Lab。
+用 NumPy 逻辑回归区分 Iris 的 versicolor 与 virginica，比较四项特征和仅花瓣两项特征，并观察不同数据划分下的结果。训练核心沿用 `04-logistic-regression/02-logistic_training.py` 中的实现。
 
 ## 数据与运行
 
@@ -26,7 +26,7 @@ uv run --frozen python .\05-iris-classification\main.py
 - 评价交叉熵、错误率、FP、FN。FP 表示 versicolor 被判为 virginica，FN 表示 virginica 被判为 versicolor。
 - 简单基线只根据训练集决定多数类。种子 42 下训练标签 0/1 数量为 37/38，故始终预测 1；验证标签 0/1 为 13/12，基线错误率为 13/25，即 52%。基线只报告分类指标，不比较其交叉熵。
 
-实验前的预期是：删除萼片特征可能因可用信息减少而提高错误率，同时观察交叉熵如何变化。这是待检验的假设，不预设删列一定变差。
+对照假设：删除萼片特征可能因可用信息减少而提高错误率，同时用交叉熵观察概率预测的变化。
 
 ## 种子 42：训练与错误分析
 
@@ -62,9 +62,9 @@ uv run --frozen python .\05-iris-classification\main.py
 
 在这四次划分和相同训练设置下，四特征模型的验证集交叉熵均更低；错误率在三个划分中持平，仅种子 42 下更低。种子 2 下两组错误率相同，但 FP/FN 类型不同。
 
-这些结果支持萼片特征在本次实验中的额外价值。概率预测质量的改善是按交叉熵衡量，不等同于已经验证概率校准。验证集只有 25 条，一条错分就改变 4 个百分点；四次验证集可能重叠，不是四份互不相关的独立测试集。本实验未作显著性检验，没有独立最终测试集，也不能据此断言所有划分、模型或训练设置下四特征都更好。
+这些结果支持萼片特征在本实验中的额外价值，概率预测的改善体现为交叉熵更低。每个验证集只有 25 条，一条错分就改变 4 个百分点，且不同划分的验证样本可能重叠。结论限于这四次划分和给定的模型、训练设置。
 
 ## 相关资源
 
-- 吴恩达 [Advanced Learning Algorithms](https://www.coursera.org/learn/advanced-learning-algorithms) 的模型评价、简单基线及错误分析相关单元；本实验以 Error analysis 为当前实践入口。
+- 吴恩达 [Advanced Learning Algorithms](https://www.coursera.org/learn/advanced-learning-algorithms) 的模型评价、简单基线及错误分析相关单元。
 - scikit-learn [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)：划分比例、随机种子及分层参数。

@@ -16,6 +16,6 @@ uv run --frozen python Numpy/01-numpy_basics.py
 
 二维数组的shape表示两条轴的长度；一维(4,)与二维(4,1)不同。`data[:, 1]`取整列并得到一维数组，`data[1, :]`取一条样本。数组与标量的基本算术逐元素计算，同形数组按对应位置运算，`np.mean`求平均。
 
-参考：[NumPy入门](https://numpy.org/doc/stable/user/absolute_beginners.html)的Array fundamentals与Array attributes；本地练习不作为官方作业完成记录。
+参考：[NumPy入门](https://numpy.org/doc/stable/user/absolute_beginners.html)的 Array fundamentals 与 Array attributes。
 
 单变量数组训练、多特征训练及相关对照见[线性回归实验](../03-linear-regression/README.md)。
