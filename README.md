@@ -6,15 +6,15 @@
 
 ## 实验索引
 
-| 单元 | 主题 | 实验 |
-|---|---|---|
-| [01-train-and-predict](01-train-and-predict/README.md) | ML 基础 | 参数枚举、训练/测试误差、预处理信息泄漏 |
-| [02-overfitting](02-overfitting/README.md) | ML 基础 | 给定模型的训练/新数据 MAE 对比与符号错误定位 |
-| [03-linear-regression](03-linear-regression/README.md) | ML 基础 | 循环与数组梯度下降、多特征训练、学习率/删列/标准化对照 |
-| [04-logistic-regression](04-logistic-regression/README.md) | ML 基础 | 概率预测、交叉熵、梯度训练、阈值与边界检查 |
-| [05-iris-classification](05-iris-classification/README.md) | ML 基础 | Iris 二分类、训练/验证、简单基线、错误分析与多划分特征对照 |
-| [06-neural-network](06-neural-network/README.md) | DL 基础 | 两层网络前向、非线性、反向传播、数值梯度检查与三样本短训练 |
-| [Numpy](Numpy/README.md) | 数值工具基础 | 数组、shape、索引与批量预测/损失计算 |
+| 单元                                                       | 主题         | 实验                                                       |
+| ---------------------------------------------------------- | ------------ | ---------------------------------------------------------- |
+| [01-train-and-predict](01-train-and-predict/README.md)     | ML 基础      | 参数枚举、训练/测试误差、预处理信息泄漏                    |
+| [02-overfitting](02-overfitting/README.md)                 | ML 基础      | 给定模型的训练/新数据 MAE 对比与符号错误定位               |
+| [03-linear-regression](03-linear-regression/README.md)     | ML 基础      | 循环与数组梯度下降、多特征训练、学习率/删列/标准化对照     |
+| [04-logistic-regression](04-logistic-regression/README.md) | ML 基础      | 概率预测、交叉熵、梯度训练、阈值与边界检查                 |
+| [05-iris-classification](05-iris-classification/README.md) | ML 基础      | Iris 二分类、训练/验证、简单基线、错误分析与多划分特征对照 |
+| [06-neural-network](06-neural-network/README.md)           | DL 基础      | 两层网络前向、反向、梯度检查、短训练与 Iris 训练/验证      |
+| [Numpy](Numpy/README.md)                                   | 数值工具基础 | 数组、shape、索引与批量预测/损失计算                       |
 
 ## 目录组织
 
@@ -26,18 +26,7 @@
 
 ```powershell
 uv sync --locked
-uv run --frozen python .\01-train-and-predict\main.py
-uv run --frozen python .\02-overfitting\main.py
-uv run --frozen python .\03-linear-regression\01-loop_linear_regression.py
-uv run --frozen python .\Numpy\01-numpy_basics.py
-uv run --frozen python .\03-linear-regression\02-numpy_linear_regression.py
-uv run --frozen python .\03-linear-regression\03-multiple_linear_regression.py
-uv run --frozen python .\03-linear-regression\04-feature_scaling.py
-uv run --frozen python .\04-logistic-regression\01-prediction_and_loss.py
-uv run --frozen python .\04-logistic-regression\02-logistic_training.py
-uv run --frozen python .\05-iris-classification\main.py
-uv run --frozen python .\06-neural-network\01-forward.py
-uv run --frozen python .\06-neural-network\02-training.py
+uv run --frozen python ......
 ```
 
 01、02单元和线性回归循环版使用 Python 标准库；数组运算使用 NumPy 2.4.3。Iris 实验还使用 scikit-learn 加载数据和划分样本，训练核心使用 NumPy 实现。依赖版本由 `pyproject.toml` 和 `uv.lock` 管理，各单元共用 `.venv`。
