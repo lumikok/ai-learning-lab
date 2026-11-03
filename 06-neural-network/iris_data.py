@@ -4,6 +4,22 @@ import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
+# train_test_split() 用于划分训练集和验证集
+
+def load_iris_raw_split(random_state=42):
+    """返回未经标准化的 X_train、X_val、y_train、y_val。
+
+    沿用原实验的两类、四特征及分层 3:1 划分，便于各训练子集
+    分别拟合预处理统计量。标签 0 为 versicolor，1 为 virginica。
+    """
+    iris = load_iris()
+    mask = iris.target != 0
+    X = iris.data[mask]
+    y = iris.target[mask] - 1
+    return train_test_split(
+        X, y, test_size=0.25, random_state=random_state, stratify=y
+    )
+
 
 def load_iris_split(random_state=42):
     """返回 X_train、X_val、y_train、y_val；标准化统计量只来自训练集。
