@@ -1,6 +1,6 @@
 # Iris 二分类：基线、错误分析与特征对照
 
-用 NumPy 逻辑回归区分 Iris 的 versicolor 与 virginica，比较四项特征和仅花瓣两项特征，并观察不同数据划分下的结果。训练核心沿用 `04-logistic-regression/02-logistic_training.py` 中的实现。
+用 NumPy 逻辑回归区分 Iris 的 versicolor 与 virginica，比较四项特征和仅花瓣两项特征，并观察不同数据划分及L2正则化强度下的结果。训练核心沿用 `04-logistic-regression/02-logistic_training.py` 中的实现。
 
 ## 数据与运行
 
@@ -14,9 +14,10 @@
 ```powershell
 uv sync --locked
 uv run --frozen python .\05-iris-classification\main.py
+uv run --frozen python .\05-iris-classification\02-l2-regularization.py
 ```
 
-脚本先打印种子 42 的数据检查、基线、两条错分记录与特征对照，再输出种子 0、1、2、42 的重复划分结果。
+`main.py` 先打印种子 42 的数据检查、基线、两条错分记录与特征对照，再输出种子 0、1、2、42 的重复划分结果。`02-l2-regularization.py` 独立运行两样本损失/梯度/训练核对，以及四个预设L2强度的Iris对照。
 
 ## 对照条件
 
@@ -64,7 +65,37 @@ uv run --frozen python .\05-iris-classification\main.py
 
 这些结果支持萼片特征在本实验中的额外价值，概率预测的改善体现为交叉熵更低。每个验证集只有 25 条，一条错分就改变 4 个百分点，且不同划分的验证样本可能重叠。结论限于这四次划分和给定的模型、训练设置。
 
+## L2正则化：从惩罚到验证表现
+
+L2在平均交叉熵之外加入权重惩罚，本实验不惩罚偏置：
+
+\[
+J_{\mathrm{total}}=J_{\mathrm{data}}+\frac{\lambda}{2m}\sum_j w_j^2,
+\qquad
+dw_{\mathrm{total}}=dw_{\mathrm{data}}+\frac{\lambda}{m}w
+\]
+
+`l2_lambda` 对应非负强度λ，`m=len(y)`；偏置梯度仍与原逻辑回归相同。惩罚梯度对权重施加向0拉的作用，实际更新由数据梯度和惩罚梯度共同决定，并不保证每一步的每个权重都更接近0。惩罚过强可能压制有效特征：当权重接近0时，不同输入的得分都接近偏置，概率趋同，模型可能连训练数据也难以充分拟合。
+
+`regularized_loss` 分别返回数据交叉熵和总目标；`train_logistic_l2` 使用权重副本，分别记录初始状态与每次更新后的两种损失。100步产生两条各101项的历史，最终返回参数重算的损失与历史末项一致。强度0的参数和完整历史复现原训练函数。
+
+两样本核对取 `X=[[1,2],[-1,1]]、y=[1,0]、w=[1,-2]、b=0.5`。强度1时数据交叉熵约1.328890，惩罚1.25，总目标约2.578890；权重梯度相较未正则化增加 `[0.5,-1]`，偏置梯度不变。学习率0.1的一步更新得到 `w≈[1,-1.81137873]、b≈0.54241418`。
+
+Iris对照固定四特征、种子42的75/25分层划分、训练统计量标准化、零权重与零偏置、学习率0.1和1000步，每组重新训练，只改变预设强度：
+
+| λ | 权重平方和 | 训练数据交叉熵 | 验证数据交叉熵 |
+|---:|---:|---:|---:|
+| 0 | 19.489781 | 0.074946 | 0.165200 |
+| 0.01 | 19.262710 | 0.075306 | 0.165767 |
+| 0.1 | 17.400553 | 0.078617 | 0.170973 |
+| 1 | 8.475913 | 0.111902 | 0.222052 |
+
+三个观察量沿同一问题链解释：权重平方和检查限制权重的作用是否显现，训练交叉熵观察拟合训练数据的代价，验证交叉熵用于比较未参与训练的样本上的预测表现。训练总目标用于监控各组自身的优化过程；不同强度改变了惩罚系数，不能直接按各自总目标排名。验证预测的评价不包含惩罚。
+
+本次随着强度增加，权重平方和下降，但验证交叉熵均未优于λ=0。因此按预先确定的验证交叉熵标准，当前保留λ=0。惩罚生效与验证预测改善需要分别验证，不能仅因权重更小就选择某个非零强度。该结论限于本次划分、候选范围与固定步数，不证明正则化普遍无益，也没有通过更强惩罚单独验证极端欠拟合。脚本还保留已有的验证错误率作为辅助结果：前三组8%，λ=1时12%。
+
 ## 相关资源
 
 - 吴恩达 [Advanced Learning Algorithms](https://www.coursera.org/learn/advanced-learning-algorithms) 的模型评价、简单基线及错误分析相关单元。
+- 吴恩达 [Supervised Machine Learning](https://www.coursera.org/learn/machine-learning) Week 3的Cost function with regularization、Regularized logistic regression。
 - scikit-learn [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)：划分比例、随机种子及分层参数。
