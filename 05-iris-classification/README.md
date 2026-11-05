@@ -15,9 +15,12 @@
 uv sync --locked
 uv run --frozen python .\05-iris-classification\main.py
 uv run --frozen python .\05-iris-classification\02-l2-regularization.py
+uv run --frozen python .\05-iris-classification\03-classification-metrics.py
 ```
 
 `main.py` 先打印种子 42 的数据检查、基线、两条错分记录与特征对照，再输出种子 0、1、2、42 的重复划分结果。`02-l2-regularization.py` 独立运行两样本损失/梯度/训练核对，以及四个预设L2强度的Iris对照。
+
+`03-classification-metrics.py` 打印同一组验证概率在三个阈值下的计数与指标。`iris_baseline.py` 保存从02入口复制的已有逻辑回归和数据处理函数，通过普通 `import` 复用。
 
 ## 对照条件
 
@@ -94,8 +97,41 @@ Iris对照固定四特征、种子42的75/25分层划分、训练统计量标准
 
 本次随着强度增加，权重平方和下降，但验证交叉熵均未优于λ=0。因此按预先确定的验证交叉熵标准，当前保留λ=0。惩罚生效与验证预测改善需要分别验证，不能仅因权重更小就选择某个非零强度。该结论限于本次划分、候选范围与固定步数，不证明正则化普遍无益，也没有通过更强惩罚单独验证极端欠拟合。脚本还保留已有的验证错误率作为辅助结果：前三组8%，λ=1时12%。
 
+## 分类指标与阈值选择
+
+正类固定为virginica（1），负类为versicolor（0）。TP为正确检出的正类，FN为漏判的正类，FP为误报成正类的负类，TN为正确排除的负类。混淆矩阵可按真实类别分行、预测类别分列表示：
+
+|  | 预测0 | 预测1 |
+|---|---|---|
+| 真实0 | TN | FP |
+| 真实1 | FN | TP |
+
+召回率回答“全部真实正类中找出了多少”，精确率回答“预测为正类的样本中有多少判断正确”：
+
+\[
+R=\frac{TP}{TP+FN},\qquad P=\frac{TP}{TP+FP},\qquad F1=\frac{2PR}{P+R}
+\]
+
+精确率与整体准确率的分母不同。以垃圾邮件为正类的示意场景中，1000封邮件只有10封垃圾，全部预测正常仍有99%整体准确率，但召回率为0；全部预测垃圾则召回率100%、精确率只有1%。一个指标很高可能掩盖另一面的不足。需要兼顾精确率和召回率时可用F1辅助比较，但具体错误代价或硬约束仍优先于单一综合分数。
+
+指标函数按 `y_prob >= threshold` 判为1，返回四种计数与P/R/F1。分母为0时，本实现约定相应指标返回0.0；这是程序约定，数学上的0/0仍无定义。例如没有预测正类时无法计算精确率，没有真实正类时无法计算召回率。
+
+八样本示意标签 `[1,0,1,1,0,1,0,1]`、概率 `[0.9,0.8,0.7,0.6,0.4,0.3,0.2,0.1]` 在阈值0.5下得到TP3、FP1、FN2、TN2，P=0.75、R=0.6、F1=2/3；阈值1.0时没有预测正类，TP0、FP0、FN5、TN3，三个指标均按上述约定返回0。示意数组保留在脚本中，入口运行Iris对照。
+
+`load_iris_validation_predictions()` 先取得既有划分与标准化结果，再从零训练一次无正则化的逻辑回归（学习率0.1、1000步），最后用返回参数计算25条验证概率。它返回真实标签和一维概率数组；调用一次会训练一次模型。三个阈值共用同一次调用的结果，比较过程只改变类别判定。
+
+| 阈值 | TP / FP / FN / TN | 精确率 | 召回率 | F1 |
+|---:|---|---:|---:|---:|
+| 0.3 | 12 / 2 / 0 / 11 | 0.857143 | 1.000000 | 0.923077 |
+| 0.5 | 11 / 1 / 1 / 12 | 0.916667 | 0.916667 | 0.916667 |
+| 0.7 | 9 / 0 / 3 / 13 | 1.000000 | 0.750000 | 0.857143 |
+
+若优先少漏判、召回率相同时再优先精确率，三个候选中选0.3，代价为2条误报。若要求FP=0、满足后再尽量少漏判，选0.7，代价为3条漏判和更低召回率；0.3的F1更高也不满足这一硬约束。
+
+阈值属于用开发验证数据选择的配置。以上结果只支持本次模型、划分、候选范围和约定需求下的选择；这25条验证数据已用于反复开发，不能再称为独立最终测试集。
+
 ## 相关资源
 
-- 吴恩达 [Advanced Learning Algorithms](https://www.coursera.org/learn/advanced-learning-algorithms) 的模型评价、简单基线及错误分析相关单元。
+- 吴恩达 [Advanced Learning Algorithms](https://www.coursera.org/learn/advanced-learning-algorithms) 的模型评价、简单基线、错误分析，以及Week 3的Error metrics for skewed datasets、Trading off precision and recall。
 - 吴恩达 [Supervised Machine Learning](https://www.coursera.org/learn/machine-learning) Week 3的Cost function with regularization、Regularized logistic regression。
 - scikit-learn [`train_test_split`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)：划分比例、随机种子及分层参数。
